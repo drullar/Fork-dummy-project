@@ -37,7 +37,7 @@ pipeline {
 
                     def failureStructure = jsonSlurper.parseText(jsonFailureStructure)
 
-                    val value = failureStructure[testList]
+                    def value = failureStructure[testList]
 
                     echo "Value: ${value}"
 

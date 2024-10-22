@@ -46,23 +46,22 @@ pipeline {
 
                 stages {
                     stage('Execute Test') {
-                    steps {
-                        script {
-                            // Run the specified test
-                            sh "mvn -Dtest=${TEST_CASE} test"
+                        steps {
+                            script {
+                                // Run the specified test
+                                sh "mvn -Dtest=${TEST_CASE} test"
+                            }
                         }
 
-                    }
+                        post {
+                            always {
+                                // Archive test results
+                                junit '**/target/surefire-reports/*.xml'
+                            }
+                        }
                     }
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            // Archive test results
-            junit '**/target/surefire-reports/*.xml'
         }
     }
 }

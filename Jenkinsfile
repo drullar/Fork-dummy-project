@@ -29,7 +29,18 @@ pipeline {
                         return
                     }
 
+                    def testList = [
+                        'Execute Test',
+                        "Matrix - TEST_CASE = 'DeflakeFlakyProjectApplicationTests#failingTest'",
+                        'Run Tests'
+                    ]
+
                     def failureStructure = jsonSlurper.parseText(jsonFailureStructure)
+
+                    val value = failureStructure[testList]
+
+                    echo "Value: ${value}"
+
                     echo "Failure Structure: ${failureStructure}"
                 }
             }

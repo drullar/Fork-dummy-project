@@ -4,32 +4,45 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://gkaraboychev@bitbucket.org/antonio_busuladzich/hackaton.git'
+                script {
+                    checkout scm
+                }
             }
         }
+
         stage('Build') {
             steps {
-                sh './mvn clean install'
+                // Build the project using Maven
+                sh 'mvn clean install'
             }
         }
-        stage('Test') {
-            steps {
-                sh './mvn test'
-            }
-        }
-        stage('Package') {
-            steps {
-                sh './mvn package'
+
+        stage('Run Tests') {
+            matrix {
+                axes {
+                    axis {
+                        name 'TEST_CASE'
+                        values 'successfulTest', 'flakyTest', 'failingTest'
+                    }
+                }
+                stages {
+                    stage('Execute Test') {
+                        steps {
+                            script {
+                                // Run the specified test
+                                sh "mvn -Dtest=${TEST_CASE} test"
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 
     post {
-        success {
-            echo 'Build and Deploy succeeded!'
-        }
-        failure {
-            echo 'Build or Deploy failed!'
+        always {
+            // Archive test results
+            junit '**/target/surefire-reports/*.xml'
         }
     }
 }

@@ -33,7 +33,7 @@ pipeline {
                         'Execute Test',
                         "Matrix - TEST_CASE = 'DeflakeFlakyProjectApplicationTests#failingTest'",
                         'Run Tests'
-                    ]
+                    ].join(' / ')
 
                     def failureStructure = jsonSlurper.parseText(jsonFailureStructure)
 

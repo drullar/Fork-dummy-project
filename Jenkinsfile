@@ -63,6 +63,13 @@ pipeline {
                                 sh "mvn -Dtest=${TEST_CASE} test"
                             }
                         }
+
+                        post {
+                            always {
+                                // Archive the test results
+                                archiveArtifacts artifacts: 'target/surefire-reports/*.txt', allowEmptyArchive: true
+                            }
+                        }
                     }
                 }
             }

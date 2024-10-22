@@ -18,6 +18,8 @@ pipeline {
                 sh 'mvn clean install'
 
                 script {
+                    echo "Before parsing JSON"
+
                     def jsonFailureStructure = params.failureStructure
                     def jsonSlurper = new JsonSlurper()
                     def failureStructure = jsonSlurper.parseText(jsonString)

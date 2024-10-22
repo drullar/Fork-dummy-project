@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurper
+
 pipeline {
     agent any
 
@@ -27,14 +29,18 @@ pipeline {
                 }
                 stages {
                     stage('Execute Test') {
-                        steps {
-                            echo "Running test: ${TEST_CASE}"
-                            echo "Deflake info: ${params.TEST_CASE}"
-                            script {
-                                // Run the specified test
-                                sh "mvn -Dtest=${TEST_CASE} test"
-                            }
+                    steps {
+                        script {
+                            def jsonFailureStructure = params.failureStructure
+                            def jsonSlurper = new JsonSlurper()
+                            def failureStructure = jsonSlurper.parseText(jsonString)
+                            echo "Failure Structure: ${failureStructure}"
+
+                            // Run the specified test
+                            sh "mvn -Dtest=${TEST_CASE} test"
                         }
+
+                    }
                     }
                 }
             }

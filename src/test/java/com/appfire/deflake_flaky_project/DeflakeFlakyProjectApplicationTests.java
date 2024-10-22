@@ -12,11 +12,13 @@ class DeflakeFlakyProjectApplicationTests {
 
 	@Test
 	void successfulTest() {
+		System.out.println("Running: Successful Test");
 		assertThat(true).isEqualTo(true);
 	}
 
 	@Test
 	void flakyTest() {
+		System.out.println("Running: Flaky Test");
 		Random random = new Random();
 		assertThat(random.nextBoolean()).isEqualTo(random.nextBoolean());
 	}

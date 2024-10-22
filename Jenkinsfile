@@ -17,10 +17,12 @@ pipeline {
                 // Build the project using Maven
                 sh 'mvn clean install'
 
-                def jsonFailureStructure = params.failureStructure
-                def jsonSlurper = new JsonSlurper()
-                def failureStructure = jsonSlurper.parseText(jsonString)
-                echo "Failure Structure: ${failureStructure}"
+                script {
+                    def jsonFailureStructure = params.failureStructure
+                    def jsonSlurper = new JsonSlurper()
+                    def failureStructure = jsonSlurper.parseText(jsonString)
+                    echo "Failure Structure: ${failureStructure}"
+                }
             }
         }
 

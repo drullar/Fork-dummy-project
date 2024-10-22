@@ -31,8 +31,10 @@ pipeline {
                             echo "Running test: ${TEST_CASE}"
                             echo "Deflake info: ${params.TEST_CASE}"
                             script {
-                                // Run the specified test
-                                sh "mvn -Dtest=${TEST_CASE} test"
+                                withDeflake{
+                                    // Run the specified test
+                                    sh "mvn -Dtest=${TEST_CASE} test"
+                                }
                             }
                         }
                     }

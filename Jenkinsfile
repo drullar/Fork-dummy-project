@@ -63,13 +63,6 @@ pipeline {
                                 sh "mvn -Dtest=${TEST_CASE} test"
                             }
                         }
-
-                        post {
-                            always {
-                                // Archive test results
-                                junit '**/target/surefire-reports/*.xml'
-                            }
-                        }
                     }
                 }
             }

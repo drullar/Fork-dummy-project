@@ -20,8 +20,16 @@ pipeline {
                 script {
                     echo "Before parsing JSON"
                     def jsonFailureStructure = params.failureStructure
+                    echo "JSON Failure Structure: ${jsonFailureStructure}"
+
                     def jsonSlurper = new JsonSlurper()
-                    def failureStructure = jsonSlurper.parseText(jsonString)
+
+                    if (jsonFailureStructure == null) {
+                        echo "No failure structure provided"
+                        return
+                    }
+
+                    def failureStructure = jsonSlurper.parseText(jsonFailureStructure)
                     echo "Failure Structure: ${failureStructure}"
                 }
             }

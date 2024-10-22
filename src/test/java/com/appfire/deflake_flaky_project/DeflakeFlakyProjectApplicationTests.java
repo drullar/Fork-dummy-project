@@ -20,9 +20,4 @@ class DeflakeFlakyProjectApplicationTests {
 		Random random = new Random();
 		assertThat(random.nextBoolean()).isEqualTo(random.nextBoolean());
 	}
-
-	@Test
-	void failingTest() {
-		assertThat(false).isEqualTo(true);
-	}
 }

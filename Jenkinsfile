@@ -40,7 +40,7 @@ pipeline {
                 axes {
                     axis {
                         name 'TEST_CASE'
-                        values 'successfulTest', 'flakyTest', 'failingTest'
+                        values 'DeflakeFlakyProjectApplicationTests#successfulTest', 'DeflakeFlakyProjectApplicationTests#flakyTest', 'DeflakeFlakyProjectApplicationTests#failingTest'
                     }
                 }
 

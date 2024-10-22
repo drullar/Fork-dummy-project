@@ -16,6 +16,11 @@ pipeline {
             steps {
                 // Build the project using Maven
                 sh 'mvn clean install'
+
+                def jsonFailureStructure = params.failureStructure
+                def jsonSlurper = new JsonSlurper()
+                def failureStructure = jsonSlurper.parseText(jsonString)
+                echo "Failure Structure: ${failureStructure}"
             }
         }
 
@@ -27,15 +32,11 @@ pipeline {
                         values 'successfulTest', 'flakyTest', 'failingTest'
                     }
                 }
+
                 stages {
                     stage('Execute Test') {
                     steps {
                         script {
-                            def jsonFailureStructure = params.failureStructure
-                            def jsonSlurper = new JsonSlurper()
-                            def failureStructure = jsonSlurper.parseText(jsonString)
-                            echo "Failure Structure: ${failureStructure}"
-
                             // Run the specified test
                             sh "mvn -Dtest=${TEST_CASE} test"
                         }

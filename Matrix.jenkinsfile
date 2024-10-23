@@ -1,0 +1,39 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                // Build the project using Maven and skip tests
+                sh "mvn clean install -DskipTests"
+            }
+        }
+
+        stage('Run Tests') {
+            matrix {
+                axes {
+                    axis {
+                        name 'TEST_CASE'
+                        values 'successfulTest', 'flakyTest', 'failingTest'
+                    }
+                }
+                stages {
+                    stage('Execute Test') {
+                        steps {
+                            echo "Running test: ${TEST_CASE}"
+                            // Simulate running the test
+                            sh "mvn -Dtest=${TEST_CASE} test"
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            // Archive test results
+            junit '**/target/surefire-reports/*.xml'
+        }
+    }
+}

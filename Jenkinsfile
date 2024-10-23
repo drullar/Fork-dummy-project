@@ -61,7 +61,6 @@ pipeline {
                             script {
                                 // Run the specified test
                                 sh "mvn -Dtest=${TEST_CASE} test"
-                                junit "**/target/surefire-reports/*.xml"
                             }
                         }
                     }

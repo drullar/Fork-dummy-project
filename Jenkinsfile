@@ -30,8 +30,8 @@ pipeline {
 
                 stages {
                     stage('Execute Test') {
-                        flaky {
-                            steps {
+                       steps {
+                            flaky {
                                 script {
                                     // Run the specified test
                                     sh "mvn clean -Dtest=${TEST_CASE} test"

@@ -16,33 +16,6 @@ pipeline {
             steps {
                 // Build the project using Maven
                 sh 'mvn clean install -DskipTests'
-
-                script {
-                    echo "Before parsing JSON"
-                    def jsonFailureStructure = params.failureStructure
-                    echo "JSON Failure Structure: ${jsonFailureStructure}"
-
-                    def jsonSlurper = new JsonSlurper()
-
-                    if (jsonFailureStructure == null) {
-                        echo "No failure structure provided"
-                        return
-                    }
-
-                    def testList = [
-                        'Execute Test',
-                        "Matrix - TEST_CASE = 'DeflakeFlakyProjectApplicationTests#failingTest'",
-                        'Run Tests'
-                    ].join(' / ')
-
-                    def failureStructure = jsonSlurper.parseText(jsonFailureStructure)
-
-                    def value = failureStructure[testList]
-
-                    echo "Value: ${value}"
-
-                    echo "Failure Structure: ${failureStructure}"
-                }
             }
         }
 
@@ -61,7 +34,12 @@ pipeline {
                             script {
                                 // Run the specified test
                                 sh "mvn clean -Dtest=${TEST_CASE} test"
-                                junit "**/target/surefire-reports/*.xml"
+                            }
+                        }
+
+                        post {
+                            always {
+                                junit '**/target/surefire-reports/*.xml'
                             }
                         }
                     }

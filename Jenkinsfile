@@ -60,7 +60,7 @@ pipeline {
                         steps {
                             script {
                                 // Run the specified test
-                                sh "mvn test"
+                                sh "mvn clean -Dtest=${TEST_CASE} test"
                             }
                         }
                     }
